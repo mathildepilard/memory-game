@@ -12,7 +12,17 @@ const cardData = [
   { value: "2024", image: "images/image10.jpg" }
 ];
 
-const gameCards = [...cardData, ...cardData];
+let gameCards = [];
+let flippedCards = [];
+let matchedCards = [];
+let attempts = 0;
+let startTime;
+let timerInterval;
+
+const gameBoard = document.getElementById("gameBoard");
+const timerElement = document.getElementById("timer");
+const attemptsElement = document.getElementById("attempts");
+const restartBtn = document.getElementById("restartBtn");
 
 function shuffleCards(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -21,27 +31,32 @@ function shuffleCards(array) {
   }
 }
 
-shuffleCards(gameCards);
-
-let flippedCards = [];
-let matchedCards = [];
-let attempts = 0;
-let startTime = Date.now();
-
-// Timer
-const timerElement = document.getElementById("timer");
-const attemptsElement = document.getElementById("attempts");
-
 function updateTimer() {
   const seconds = Math.floor((Date.now() - startTime) / 1000);
   timerElement.textContent = `⏱ Temps : ${seconds}s`;
 }
 
-setInterval(updateTimer, 1000);
+function startTimer() {
+  startTime = Date.now();
+  clearInterval(timerInterval);
+  timerInterval = setInterval(updateTimer, 1000);
+}
 
-// Création du plateau
+function resetBoard() {
+  gameBoard.innerHTML = "";
+  flippedCards = [];
+  matchedCards = [];
+  attempts = 0;
+  attemptsElement.textContent = "💥 Essais : 0";
+  timerElement.textContent = "⏱ Temps : 0s";
+}
+
 function createBoard() {
-  const gameBoard = document.getElementById("gameBoard");
+  resetBoard();
+  gameCards = [...cardData, ...cardData];
+  shuffleCards(gameCards);
+  startTimer();
+
   gameCards.forEach((card, index) => {
     const cardElement = document.createElement("div");
     cardElement.classList.add("card");
@@ -67,7 +82,6 @@ function createBoard() {
   });
 }
 
-// Fonction de retournement
 function flipCard(index) {
   const cardElement = document.querySelector(`[data-index="${index}"]`);
   if (flippedCards.length < 2 && !flippedCards.includes(index) && !matchedCards.includes(index)) {
@@ -77,33 +91,36 @@ function flipCard(index) {
     if (flippedCards.length === 2) {
       attempts++;
       attemptsElement.textContent = `💥 Essais : ${attempts}`;
-      setTimeout(checkMatch, 500);
+      setTimeout(checkMatch, 1000); // délai plus long
     }
   }
 }
 
-// Vérification des paires
 function checkMatch() {
   const card1Index = flippedCards[0];
   const card2Index = flippedCards[1];
   const card1 = gameCards[card1Index];
   const card2 = gameCards[card2Index];
 
+  const card1Element = document.querySelector(`[data-index="${card1Index}"]`);
+  const card2Element = document.querySelector(`[data-index="${card2Index}"]`);
+
   if (card1.value === card2.value) {
     matchedCards.push(card1Index, card2Index);
     if (matchedCards.length === gameCards.length) {
+      clearInterval(timerInterval);
       setTimeout(() => {
         alert(`🎉 Bravo ! Tu as trouvé toutes les paires en ${attempts} essais et ${Math.floor((Date.now() - startTime) / 1000)} secondes.`);
       }, 300);
     }
   } else {
-    const card1Element = document.querySelector(`[data-index="${card1Index}"]`);
-    const card2Element = document.querySelector(`[data-index="${card2Index}"]`);
     card1Element.classList.remove("flipped");
     card2Element.classList.remove("flipped");
   }
 
   flippedCards = [];
 }
+
+restartBtn.addEventListener("click", createBoard);
 
 createBoard();

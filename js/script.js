@@ -1,4 +1,3 @@
-
 const cardData = [
   { value: "2015", image: "images/image1.jpg" },
   { value: "2016", image: "images/image2.jpg" },
@@ -54,7 +53,7 @@ function createBoard() {
 }
 
 function flipCard(index) {
-  const cardElement = document.querySelector(`[data-index="\${index}"]`);
+  const cardElement = document.querySelector(`[data-index="${index}"]`);
   if (flippedCards.length < 2 && !flippedCards.includes(index) && !matchedCards.includes(index)) {
     cardElement.classList.add("flipped");
     flippedCards.push(index);
@@ -77,8 +76,8 @@ function checkMatch() {
       alert("Bravo ! Tu as trouvé toutes les paires !");
     }
   } else {
-    const card1Element = document.querySelector(`[data-index="\${card1Index}"]`);
-    const card2Element = document.querySelector(`[data-index="\${card2Index}"]`);
+    const card1Element = document.querySelector(`[data-index="${card1Index}"]`);
+    const card2Element = document.querySelector(`[data-index="${card2Index}"]`);
     card1Element.classList.remove("flipped");
     card2Element.classList.remove("flipped");
   }

@@ -18,6 +18,7 @@ let matchedCards = [];
 let attempts = 0;
 let startTime;
 let timerInterval;
+let isChecking = false;
 
 const gameBoard = document.getElementById("gameBoard");
 const timerElement = document.getElementById("timer");
@@ -47,6 +48,7 @@ function resetBoard() {
   flippedCards = [];
   matchedCards = [];
   attempts = 0;
+  isChecking = false;
   attemptsElement.textContent = "💥 Essais : 0";
   timerElement.textContent = "⏱ Temps : 0s";
 }
@@ -83,6 +85,8 @@ function createBoard() {
 }
 
 function flipCard(index) {
+  if (isChecking) return;
+
   const cardElement = document.querySelector(`[data-index="${index}"]`);
   if (flippedCards.length < 2 && !flippedCards.includes(index) && !matchedCards.includes(index)) {
     cardElement.classList.add("flipped");
@@ -91,7 +95,8 @@ function flipCard(index) {
     if (flippedCards.length === 2) {
       attempts++;
       attemptsElement.textContent = `💥 Essais : ${attempts}`;
-      setTimeout(checkMatch, 1000); // délai plus long
+      isChecking = true;
+      setTimeout(checkMatch, 1000); // délai d'observation
     }
   }
 }
@@ -119,6 +124,7 @@ function checkMatch() {
   }
 
   flippedCards = [];
+  isChecking = false;
 }
 
 restartBtn.addEventListener("click", createBoard);

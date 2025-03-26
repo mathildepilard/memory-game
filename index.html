@@ -3,24 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title>Memory Game</title>
-  <!-- On relie la feuille de style externe -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div id="gameBoard"></div>
-
-  <!-- Script JS séparé -->
-  <script src="js/script.js"></script>
-</body>
-</html>
-
-<body>
+  <!-- Infos score et temps -->
   <div id="gameInfo">
     <span id="timer">⏱ Temps : 0s</span>
     <span id="attempts">💥 Essais : 0</span>
   </div>
+
+  <!-- Bouton rejouer -->
+  <button id="restartBtn">🔁 Rejouer</button>
+
+  <!-- Plateau de jeu -->
   <div id="gameBoard"></div>
 
+  <!-- Script JS -->
   <script src="js/script.js"></script>
 </body>
-<button id="restartBtn">🔁 Rejouer</button>
+</html>

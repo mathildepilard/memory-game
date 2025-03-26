@@ -1,3 +1,4 @@
+
 const cardData = [
   { value: "2015", image: "images/image1.jpg" },
   { value: "2016", image: "images/image2.jpg" },
@@ -24,7 +25,21 @@ shuffleCards(gameCards);
 
 let flippedCards = [];
 let matchedCards = [];
+let attempts = 0;
+let startTime = Date.now();
 
+// Timer
+const timerElement = document.getElementById("timer");
+const attemptsElement = document.getElementById("attempts");
+
+function updateTimer() {
+  const seconds = Math.floor((Date.now() - startTime) / 1000);
+  timerElement.textContent = `⏱ Temps : ${seconds}s`;
+}
+
+setInterval(updateTimer, 1000);
+
+// Création du plateau
 function createBoard() {
   const gameBoard = document.getElementById("gameBoard");
   gameCards.forEach((card, index) => {
@@ -52,6 +67,7 @@ function createBoard() {
   });
 }
 
+// Fonction de retournement
 function flipCard(index) {
   const cardElement = document.querySelector(`[data-index="${index}"]`);
   if (flippedCards.length < 2 && !flippedCards.includes(index) && !matchedCards.includes(index)) {
@@ -59,11 +75,14 @@ function flipCard(index) {
     flippedCards.push(index);
 
     if (flippedCards.length === 2) {
+      attempts++;
+      attemptsElement.textContent = `💥 Essais : ${attempts}`;
       setTimeout(checkMatch, 500);
     }
   }
 }
 
+// Vérification des paires
 function checkMatch() {
   const card1Index = flippedCards[0];
   const card2Index = flippedCards[1];
@@ -73,7 +92,9 @@ function checkMatch() {
   if (card1.value === card2.value) {
     matchedCards.push(card1Index, card2Index);
     if (matchedCards.length === gameCards.length) {
-      alert("Bravo ! Tu as trouvé toutes les paires !");
+      setTimeout(() => {
+        alert(`🎉 Bravo ! Tu as trouvé toutes les paires en ${attempts} essais et ${Math.floor((Date.now() - startTime) / 1000)} secondes.`);
+      }, 300);
     }
   } else {
     const card1Element = document.querySelector(`[data-index="${card1Index}"]`);

@@ -1,5 +1,6 @@
 
 body {
+  background-color: #fdf7f2;
   background-image: url('../images/background.jpg');
   background-size: cover;
   background-position: center;
@@ -17,7 +18,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(255,255,255,0.85);
+  background-color: #fff5eb;
   padding: 20px;
   margin: 20px auto;
   border-radius: 15px;
@@ -47,17 +48,26 @@ body {
   padding: 10px 16px;
   width: 100%;
   max-width: 250px;
-  background-color: #4CAF50;
+  background-color: #f08080;
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+#restartBtn::before {
+  content: "❤️";
+  display: inline-block;
 }
 
 #restartBtn:hover {
-  background-color: #45a049;
+  background-color: #e66a6a;
 }
 
 #gameBoard {
